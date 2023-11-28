@@ -2,20 +2,20 @@ package com.plr.quitornot.client.screen.confirm;
 
 import com.plr.quitornot.client.config.Config;
 import com.plr.quitornot.client.screen.confirm.style.BaseStyle;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 public final class ConfirmScreen extends Screen {
-    private final Text message;
+    private final Component message;
     private final Runnable onCancel;
     private final Runnable onConfirm;
     private final long openTime;
     private final BaseStyle style = Config.config.confirmScreenStyle.baseStyleSupplier.get();
-    private ButtonWidget cancel;
-    private ButtonWidget confirm;
+    private Button cancel;
+    private Button confirm;
 
     private boolean confirmed = false;
 
@@ -23,11 +23,11 @@ public final class ConfirmScreen extends Screen {
         return confirmed;
     }
 
-    public ConfirmScreen(Screen parentScreen, Text message, Runnable confirm) {
-        super(Text.translatable("screen.quitornot.confirm.title"));
+    public ConfirmScreen(Screen parentScreen, Component message, Runnable confirm) {
+        super(Component.translatable("screen.quitornot.confirm.title"));
         this.openTime = System.currentTimeMillis();
         this.message = message;
-        this.onCancel = () -> this.client.setScreen(parentScreen);
+        this.onCancel = () -> this.minecraft.setScreen(parentScreen);
         this.onConfirm = () -> {
             confirmed = true;
             confirm.run();
@@ -57,13 +57,13 @@ public final class ConfirmScreen extends Screen {
 
         confirm.active = false;
         cancel.active = false;
-        this.addDrawableChild(confirm);
-        this.addDrawableChild(cancel);
+        this.addRenderableWidget(confirm);
+        this.addRenderableWidget(cancel);
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        style.render(this.client, this.textRenderer, this, title, message, context, mouseX, mouseY, delta);
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        style.render(this.minecraft, this.font, this, title, message, context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
     }
 
@@ -81,7 +81,7 @@ public final class ConfirmScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         onCancel.run();
     }
 

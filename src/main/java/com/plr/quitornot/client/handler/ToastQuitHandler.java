@@ -3,15 +3,15 @@ package com.plr.quitornot.client.handler;
 import com.plr.quitornot.client.config.Config;
 import com.plr.quitornot.client.event.EventResult;
 import com.plr.quitornot.client.toast.QuitToast;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 
 public class ToastQuitHandler {
-    private final Text message;
+    private final Component message;
     private State state = State.INACTIVE;
     private long startTime = 0;
 
-    public ToastQuitHandler(Text message) {
+    public ToastQuitHandler(Component message) {
         this.message = message;
     }
 
@@ -26,7 +26,7 @@ public class ToastQuitHandler {
         if (state == State.INACTIVE) {
             startTime = millis;
             state = State.ACTIVE;
-            MinecraftClient.getInstance().getToastManager().add(
+            Minecraft.getInstance().getToasts().addToast(
                     new QuitToast(message, Config.config.toastKeepTime)
             );
             return EventResult.CANCEL;

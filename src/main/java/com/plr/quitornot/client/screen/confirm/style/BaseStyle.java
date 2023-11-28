@@ -1,36 +1,40 @@
 package com.plr.quitornot.client.screen.confirm.style;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.render.*;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class BaseStyle {
-    public abstract ButtonWidget generateConfirmButtons(Screen screen, ButtonWidget.PressAction onConfirm);
+    public abstract Button generateConfirmButtons(Screen screen, Button.OnPress onConfirm);
 
-    public abstract ButtonWidget generateCancelButtons(Screen screen, ButtonWidget.PressAction onCancel);
+    public abstract Button generateCancelButtons(Screen screen, Button.OnPress onCancel);
 
-    public abstract void render(MinecraftClient client, TextRenderer textRenderer, Screen screen, Text title, Text message,
-                                DrawContext ctx, int mouseX, int mouseY, float delta);
+    public abstract void render(Minecraft client, Font textRenderer, Screen screen, Component title, Component message,
+                                GuiGraphics ctx, int mouseX, int mouseY, float delta);
 
-    protected void renderBackground(int startX, int startY, int endX, int endY, Identifier identifier) {
+    protected void renderBackground(int startX, int startY, int endX, int endY, ResourceLocation identifier) {
         int width = endX - startX;
         int height = endY - startY;
-        Tessellator tessellator = Tessellator.getInstance();
-        BufferBuilder bufferBuilder = tessellator.getBuffer();
-        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder bufferBuilder = tesselator.getBuilder();
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, identifier);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-        bufferBuilder.vertex(startX, endY, 0.0D).texture(0.0F, height / 32.0F).color(64, 64, 64, 255).next();
-        bufferBuilder.vertex(endX, endY, 0.0D).texture(width / 32.0F, height / 32.0F).color(64, 64, 64, 255).next();
-        bufferBuilder.vertex(endX, startY, 0.0D).texture(width / 32.0F, 0).color(64, 64, 64, 255).next();
-        bufferBuilder.vertex(startX, startY, 0.0D).texture(0.0F, 0).color(64, 64, 64, 255).next();
-        tessellator.draw();
+        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        bufferBuilder.vertex(startX, endY, 0.0D).uv(0.0F, height / 32.0F).color(64, 64, 64, 255).endVertex();
+        bufferBuilder.vertex(endX, endY, 0.0D).uv(width / 32.0F, height / 32.0F).color(64, 64, 64, 255).endVertex();
+        bufferBuilder.vertex(endX, startY, 0.0D).uv(width / 32.0F, 0).color(64, 64, 64, 255).endVertex();
+        bufferBuilder.vertex(startX, startY, 0.0D).uv(0.0F, 0).color(64, 64, 64, 255).endVertex();
+        tesselator.end();
     }
 }

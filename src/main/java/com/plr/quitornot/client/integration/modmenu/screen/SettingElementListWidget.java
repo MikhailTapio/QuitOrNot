@@ -1,22 +1,22 @@
 package com.plr.quitornot.client.integration.modmenu.screen;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ContainerObjectSelectionList;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.gui.narration.NarratedElementType;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.network.chat.Component;
 
 import java.util.Collections;
 import java.util.List;
 
-public final class SettingElementListWidget extends ElementListWidget<SettingElementListWidget.Entry> {
-    public SettingElementListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l, int m) {
+public final class SettingElementListWidget extends ContainerObjectSelectionList<SettingElementListWidget.Entry> {
+    public SettingElementListWidget(Minecraft minecraftClient, int i, int j, int k, int l, int m) {
         super(minecraftClient, i, j, k, l, m);
     }
 
@@ -26,61 +26,61 @@ public final class SettingElementListWidget extends ElementListWidget<SettingEle
     }
 
     public class CategoryEntry extends Entry {
-        private final Text text;
+        private final Component text;
         private final int textWidth;
         private final int textColor;
 
-        public CategoryEntry(Text text, int color) {
+        public CategoryEntry(Component text, int color) {
             this.text = text;
-            this.textWidth = SettingElementListWidget.this.client.textRenderer.getWidth(text);
+            this.textWidth = SettingElementListWidget.this.minecraft.font.width(text);
             this.textColor = color;
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
-            return ImmutableList.of(new Selectable() {
-                public SelectionType getType() {
-                    return SelectionType.HOVERED;
+        public List<? extends NarratableEntry> narratables() {
+            return ImmutableList.of(new NarratableEntry() {
+                public NarrationPriority narrationPriority() {
+                    return NarrationPriority.HOVERED;
                 }
 
-                public void appendNarrations(NarrationMessageBuilder builder) {
-                    builder.put(NarrationPart.TITLE, text);
+                public void updateNarration(NarrationElementOutput builder) {
+                    builder.add(NarratedElementType.TITLE, text);
                 }
             });
         }
 
         @Override
-        public List<? extends Element> children() {
+        public List<? extends GuiEventListener> children() {
             return Collections.emptyList();
         }
 
         @Override
-        public void render(DrawContext ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+        public void render(GuiGraphics ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             // 居中
-            assert client.currentScreen != null;
-            int dx = client.currentScreen.width / 2 - this.textWidth / 2;
+            assert minecraft.screen != null;
+            int dx = minecraft.screen.width / 2 - this.textWidth / 2;
             int dy = y + entryHeight;
-            ctx.drawText(client.textRenderer, this.text, dx, dy - client.textRenderer.fontHeight, textColor, true);
+            ctx.drawString(minecraft.font, this.text, dx, dy - minecraft.font.lineHeight, textColor, true);
         }
     }
 
     public class InputListEntry extends Entry {
-        private final TextFieldWidget fieldWidget;
-        private final Text describeText;
+        private final EditBox fieldWidget;
+        private final Component describeText;
 
-        public InputListEntry(TextFieldWidget fieldWidget, Text describeText) {
+        public InputListEntry(EditBox fieldWidget, Component describeText) {
             this.fieldWidget = fieldWidget;
             this.describeText = describeText;
         }
 
         @Override
-        public List<? extends Element> children() {
+        public List<? extends GuiEventListener> children() {
             return Collections.singletonList(fieldWidget);
         }
 
         @Override
-        public void render(DrawContext ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            ctx.drawText(client.textRenderer, describeText, x, (int) (y + client.textRenderer.fontHeight / 2.0),
+        public void render(GuiGraphics ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            ctx.drawString(minecraft.font, describeText, x, (int) (y + minecraft.font.lineHeight / 2.0),
                     16777215, true);
             this.fieldWidget.setX(entryWidth - fieldWidget.getWidth() + x);
             this.fieldWidget.setY(y);
@@ -88,29 +88,29 @@ public final class SettingElementListWidget extends ElementListWidget<SettingEle
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        public List<? extends NarratableEntry> narratables() {
             return Collections.singletonList(fieldWidget);
         }
     }
 
 
     public class ButtonListEntry extends Entry {
-        private final ButtonWidget button;
-        private final Text describeText;
+        private final Button button;
+        private final Component describeText;
 
-        public ButtonListEntry(ButtonWidget settleButton, Text describeText) {
+        public ButtonListEntry(Button settleButton, Component describeText) {
             this.button = settleButton;
             this.describeText = describeText;
         }
 
         @Override
-        public List<? extends Element> children() {
+        public List<? extends GuiEventListener> children() {
             return Collections.singletonList(button);
         }
 
         @Override
-        public void render(DrawContext ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            ctx.drawText(client.textRenderer, describeText, x, y + 5, 16777215, true);
+        public void render(GuiGraphics ctx, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            ctx.drawString(minecraft.font, describeText, x, y + 5, 16777215, true);
             this.button.setX(entryWidth - button.getWidth() + x);
             this.button.setY(y);
             this.button.render(ctx, mouseX, mouseY, tickDelta);
@@ -127,10 +127,11 @@ public final class SettingElementListWidget extends ElementListWidget<SettingEle
         }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        public List<? extends NarratableEntry> narratables() {
             return Collections.singletonList(button);
         }
     }
 
-    public abstract static class Entry extends ElementListWidget.Entry<Entry> { }
+    public abstract static class Entry extends ContainerObjectSelectionList.Entry<Entry> {
+    }
 }

@@ -8,18 +8,18 @@ import com.plr.quitornot.client.event.EventResult;
 import com.plr.quitornot.client.handler.ToastQuitHandler;
 import com.plr.quitornot.client.screen.confirm.ConfirmScreen;
 import net.fabricmc.api.ClientModInitializer;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.GameMenuScreen;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.PauseScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import org.slf4j.Logger;
 
 
 public class QuitOrNot implements ClientModInitializer {
     public static final Logger LOGGER = LogUtils.getLogger();
-    private final ToastQuitHandler toastInFinalQuitHandler = new ToastQuitHandler(Text.translatable("toast.quitornot.confirm.title.game"));
-    private final ToastQuitHandler toastInSinglePlayerQuitHandle = new ToastQuitHandler(Text.translatable("toast.quitornot.confirm.title.singleplayer"));
-    private final ToastQuitHandler toastInMultiplayerQuitHandle = new ToastQuitHandler(Text.translatable("toast.quitornot.confirm.title.multiplayer"));
+    private final ToastQuitHandler toastInFinalQuitHandler = new ToastQuitHandler(Component.translatable("toast.quitornot.confirm.title.game"));
+    private final ToastQuitHandler toastInSinglePlayerQuitHandle = new ToastQuitHandler(Component.translatable("toast.quitornot.confirm.title.singleplayer"));
+    private final ToastQuitHandler toastInMultiplayerQuitHandle = new ToastQuitHandler(Component.translatable("toast.quitornot.confirm.title.multiplayer"));
 
     @Override
     public void onInitializeClient() {
@@ -29,28 +29,28 @@ public class QuitOrNot implements ClientModInitializer {
                 return toastInFinalQuitHandler.trigger();
             }
             if (Config.config.confirmTypeQuitGame == Config.ConfirmTypeEnum.SCREEN) {
-                MinecraftClient.getInstance().setScreen(new ConfirmScreen(MinecraftClient.getInstance().currentScreen, Text.translatable("screen.quitornot.confirm.title.game"), () -> MinecraftClient.getInstance().scheduleStop()));
+                Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.game"), () -> Minecraft.getInstance().stop()));
                 return EventResult.CANCEL;
             }
             return EventResult.PASS;
         });
 
-        ButtonPressEvent.BUTTON_PRESS.register((button) -> {
-            if (!(MinecraftClient.getInstance().currentScreen instanceof GameMenuScreen)) {
+        ButtonPressEvent.BUTTON_PRESS.register(button -> {
+            if (!(Minecraft.getInstance().screen instanceof PauseScreen)) {
                 return EventResult.PASS;
             }
             String key = null;
-            if (button.getMessage() instanceof TranslatableTextContent) {
-                key = ((TranslatableTextContent) button.getMessage()).getKey();
-            } else if (button.getMessage().getContent() instanceof TranslatableTextContent) {
-                key = ((TranslatableTextContent) button.getMessage().getContent()).getKey();
+            if (button.getMessage() instanceof TranslatableContents) {
+                key = ((TranslatableContents) button.getMessage()).getKey();
+            } else if (button.getMessage().getContents() instanceof TranslatableContents) {
+                key = ((TranslatableContents) button.getMessage().getContents()).getKey();
             }
             if ("menu.returnToMenu".equals(key)) {
                 if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmTypeEnum.TOAST) {
                     return toastInSinglePlayerQuitHandle.trigger();
                 }
                 if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmTypeEnum.SCREEN) {
-                    MinecraftClient.getInstance().setScreen(new ConfirmScreen(MinecraftClient.getInstance().currentScreen, Text.translatable("screen.quitornot.confirm.title.singleplayer"), button::onPress));
+                    Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.singleplayer"), button::onPress));
                     return EventResult.CANCEL;
                 }
                 return EventResult.PASS;
@@ -60,7 +60,7 @@ public class QuitOrNot implements ClientModInitializer {
                     return toastInMultiplayerQuitHandle.trigger();
                 }
                 if (Config.config.confirmTypeQuitMultiplayer == Config.ConfirmTypeEnum.SCREEN) {
-                    MinecraftClient.getInstance().setScreen(new ConfirmScreen(MinecraftClient.getInstance().currentScreen, Text.translatable("screen.quitornot.confirm.title.multiplayer"), button::onPress));
+                    Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.multiplayer"), button::onPress));
                     return EventResult.CANCEL;
                 }
                 return EventResult.PASS;

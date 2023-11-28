@@ -6,7 +6,7 @@ import com.plr.quitornot.client.screen.confirm.style.BaseStyle;
 import com.plr.quitornot.client.screen.confirm.style.BedrockStyle;
 import com.plr.quitornot.client.screen.confirm.style.ClassicStyle;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -80,12 +80,12 @@ public class Config {
     }
 
     public enum confirmScreenStyleEnum {
-        CLASSIC(Text.translatable("config.quitornot.type.screen.classic"), ClassicStyle::new),
-        BEDROCK(Text.translatable("config.quitornot.type.screen.bedrock"), BedrockStyle::new);
-        public final Text displayName;
+        CLASSIC(Component.translatable("config.quitornot.type.screen.classic"), ClassicStyle::new),
+        BEDROCK(Component.translatable("config.quitornot.type.screen.bedrock"), BedrockStyle::new);
+        public final Component displayName;
         public final Supplier<BaseStyle> baseStyleSupplier;
 
-        confirmScreenStyleEnum(Text displayName, Supplier<BaseStyle> baseStyleSupplier) {
+        confirmScreenStyleEnum(Component displayName, Supplier<BaseStyle> baseStyleSupplier) {
             this.displayName = displayName;
             this.baseStyleSupplier = baseStyleSupplier;
         }
@@ -93,12 +93,12 @@ public class Config {
 
 
     public enum ConfirmTypeEnum {
-        TOAST(Text.translatable("config.quitornot.type.confirm.toast")),
-        SCREEN(Text.translatable("config.quitornot.type.confirm.screen")),
-        NONE(Text.translatable("config.quitornot.type.confirm.none"));
-        public final Text displayName;
+        TOAST(Component.translatable("config.quitornot.type.confirm.toast")),
+        SCREEN(Component.translatable("config.quitornot.type.confirm.screen")),
+        NONE(Component.translatable("config.quitornot.type.confirm.none"));
+        public final Component displayName;
 
-        ConfirmTypeEnum(Text displayName) {
+        ConfirmTypeEnum(Component displayName) {
             this.displayName = displayName;
         }
     }

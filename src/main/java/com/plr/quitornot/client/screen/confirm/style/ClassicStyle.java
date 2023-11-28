@@ -1,12 +1,12 @@
 package com.plr.quitornot.client.screen.confirm.style;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 public final class ClassicStyle extends BaseStyle {
     // 按钮宽度
@@ -21,41 +21,41 @@ public final class ClassicStyle extends BaseStyle {
     private static final int titleTMargin = 30;
 
     @Override
-    public ButtonWidget generateConfirmButtons(Screen screen, ButtonWidget.PressAction onConfirm) {
-        return ButtonWidget.builder(ScreenTexts.YES, onConfirm)
-                .dimensions(screen.width / 2 - buttonWidth - buttonFMargin,
+    public Button generateConfirmButtons(Screen screen, Button.OnPress onConfirm) {
+        return Button.builder(CommonComponents.GUI_YES, onConfirm)
+                .bounds(screen.width / 2 - buttonWidth - buttonFMargin,
                         screen.height - buttonHeight - buttonBMargin,
                         buttonWidth, buttonHeight).build();
     }
 
     @Override
-    public ButtonWidget generateCancelButtons(Screen screen, ButtonWidget.PressAction onCancel) {
-        return ButtonWidget.builder(ScreenTexts.NO, onCancel)
-                .dimensions(screen.width / 2 + buttonFMargin,
+    public Button generateCancelButtons(Screen screen, Button.OnPress onCancel) {
+        return Button.builder(CommonComponents.GUI_NO, onCancel)
+                .bounds(screen.width / 2 + buttonFMargin,
                         screen.height - buttonHeight - buttonBMargin,
                         buttonWidth, buttonHeight).build();
     }
 
     @Override
-    public void render(MinecraftClient client, TextRenderer textRenderer, Screen screen, Text title, Text message, DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void render(Minecraft client, Font textRenderer, Screen screen, Component title, Component message, GuiGraphics ctx, int mouseX, int mouseY, float delta) {
         this.renderBackground(ctx, screen);
         drawTextAndMessage(textRenderer, screen, title, message, ctx);
     }
 
-    public void renderBackground(DrawContext ctx, Screen screen) {
-        if (MinecraftClient.getInstance().world != null) {
+    public void renderBackground(GuiGraphics ctx, Screen screen) {
+        if (Minecraft.getInstance().level != null) {
             ctx.fillGradient(0, 0, screen.width, screen.height, -1072689136, -804253680);
         } else {
-            screen.renderBackgroundTexture(ctx);
+            screen.renderDirtBackground(ctx);
         }
     }
 
-    private void drawTextAndMessage(TextRenderer textRenderer, Screen screen, Text title, Text message, DrawContext ctx) {
-        ctx.drawCenteredTextWithShadow(textRenderer, title,
+    private void drawTextAndMessage(Font textRenderer, Screen screen, Component title, Component message, GuiGraphics ctx) {
+        ctx.drawCenteredString(textRenderer, title,
                 screen.width / 2,
                 titleTMargin,
                 16777215);
-        ctx.drawCenteredTextWithShadow(textRenderer, message,
+        ctx.drawCenteredString(textRenderer, message,
                 screen.width / 2,
                 screen.height / 2 - 30,
                 10526880);

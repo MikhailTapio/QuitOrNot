@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "MixinButtonWidget",
-    "MixinMinecraftClient"
+    "MixinButton",
+    "MixinMinecraft"
   ],
   "injectors": {
     "defaultRequire": 1

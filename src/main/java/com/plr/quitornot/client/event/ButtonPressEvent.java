@@ -2,7 +2,7 @@ package com.plr.quitornot.client.event;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.components.Button;
 
 public class ButtonPressEvent {
     public static final Event<ButtonPress> BUTTON_PRESS = EventFactory.createArrayBacked(ButtonPress.class,
@@ -17,6 +17,6 @@ public class ButtonPressEvent {
 
     @FunctionalInterface
     public interface ButtonPress {
-        EventResult onPress(ButtonWidget widget);
+        EventResult onPress(Button widget);
     }
 }

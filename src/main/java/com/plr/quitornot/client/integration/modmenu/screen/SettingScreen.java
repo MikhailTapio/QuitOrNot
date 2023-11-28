@@ -1,124 +1,124 @@
 package com.plr.quitornot.client.integration.modmenu.screen;
 
 import com.plr.quitornot.client.config.Config;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 
 import java.util.function.Consumer;
 
 public final class SettingScreen extends Screen {
     private final Screen parentScreen;
-    private ButtonWidget back;
+    private Button back;
 
     public SettingScreen(Screen screen) {
-        super(Text.translatable("config.quitornot.settings.title"));
+        super(Component.translatable("config.quitornot.settings.title"));
         parentScreen = screen;
     }
 
     @Override
     protected void init() {
 
-        back = ButtonWidget.builder(ScreenTexts.BACK, (button) -> {
+        back = Button.builder(CommonComponents.GUI_BACK, (button) -> {
             Config.save();
-            client.setScreen(parentScreen);
-        }).dimensions(this.width / 2 - 100, this.height - 30, 200, 20).build();
+            minecraft.setScreen(parentScreen);
+        }).bounds(this.width / 2 - 100, this.height - 30, 200, 20).build();
 
 
-        SettingElementListWidget listWidget = new SettingElementListWidget(this.client, this.width, this.height, 30 /* 上边距 */, height - 40/* 下边距 */, 24);
+        SettingElementListWidget listWidget = new SettingElementListWidget(this.minecraft, this.width, this.height, 30 /* 上边距 */, height - 40/* 下边距 */, 24);
         {
-            MutableText category = Text.translatable("config.quitornot.settings.type.confirm.category");
+            MutableComponent category = Component.translatable("config.quitornot.settings.type.confirm.category");
             listWidget.addEntry(listWidget.new CategoryEntry(category.setStyle(Style.EMPTY.withBold(true)), 11184810));
 
-            listWidget.addEntry(listWidget.new ButtonListEntry(ButtonWidget
+            listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder(Config.config.confirmTypeQuitGame.displayName, (button) -> {
                         Config.config.confirmTypeQuitGame = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitGame);
                         button.setMessage((Config.config.confirmTypeQuitGame.displayName));
                     })
-                    .dimensions(0, 0, 50, 20).build(), Text.translatable("config.quitornot.settings.type.confirm.game")));
+                    .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.game")));
 
-            listWidget.addEntry(listWidget.new ButtonListEntry(ButtonWidget
+            listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmTypeQuitSinglePlayer.displayName), (button) -> {
                         Config.config.confirmTypeQuitSinglePlayer = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitSinglePlayer);
                         button.setMessage((Config.config.confirmTypeQuitSinglePlayer.displayName));
                     })
-                    .dimensions(0, 0, 50, 20).build(), Text.translatable("config.quitornot.settings.type.confirm.singleplayer")));
+                    .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.singleplayer")));
 
-            listWidget.addEntry(listWidget.new ButtonListEntry(ButtonWidget
+            listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmTypeQuitMultiplayer.displayName), (button) -> {
                         Config.config.confirmTypeQuitMultiplayer = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitMultiplayer);
                         button.setMessage((Config.config.confirmTypeQuitMultiplayer.displayName));
                     })
-                    .dimensions(0, 0, 50, 20).build(), Text.translatable("config.quitornot.settings.type.confirm.multiplayer")));
+                    .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.multiplayer")));
         }
         {
-            MutableText category = Text.translatable("config.quitornot.settings.screen.category");
+            MutableComponent category = Component.translatable("config.quitornot.settings.screen.category");
             listWidget.addEntry(listWidget.new CategoryEntry(category.setStyle(category.getStyle().withBold(true)), 11184810));
 
-            listWidget.addEntry(listWidget.new ButtonListEntry(ButtonWidget
+            listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmScreenStyle.displayName), (button) -> {
                         Config.config.confirmScreenStyle = Config.config.nextEnum(Config.confirmScreenStyleEnum.class, Config.config.confirmScreenStyle);
                         button.setMessage((Config.config.confirmScreenStyle.displayName));
                     })
-                    .dimensions(0, 0, 50, 20).build(),
-                    Text.translatable("config.quitornot.settings.screen.style")));
+                    .bounds(0, 0, 50, 20).build(),
+                    Component.translatable("config.quitornot.settings.screen.style")));
 
 
-            listWidget.addEntry(listWidget.new ButtonListEntry(ButtonWidget
-                    .builder(Config.config.enableKey ? ScreenTexts.ON : ScreenTexts.OFF, (button) -> {
+            listWidget.addEntry(listWidget.new ButtonListEntry(Button
+                    .builder(Config.config.enableKey ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF, (button) -> {
                         Config.config.enableKey = !Config.config.enableKey;
-                        button.setMessage(Config.config.enableKey ? ScreenTexts.ON : ScreenTexts.OFF);
+                        button.setMessage(Config.config.enableKey ? CommonComponents.OPTION_ON : CommonComponents.OPTION_OFF);
                     })
-                    .dimensions(0, 0, 50, 20).build(), Text.translatable("config.quitornot.settings.screen.key")));
+                    .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.screen.key")));
 
-            TextFieldWidget keepDark = new TextFieldWidget(client.textRenderer, 0, 0, 48, 20, Text.empty());
-            keepDark.setText(String.valueOf(Config.config.buttonWaitTime));
-            keepDark.setChangedListener(new PositiveLongParser(keepDark, (it) -> Config.config.buttonWaitTime = it));
-            listWidget.addEntry(listWidget.new InputListEntry(keepDark, Text.translatable("config.quitornot.settings.screen.wait")));
+            EditBox keepDark = new EditBox(minecraft.font, 0, 0, 48, 20, Component.empty());
+            keepDark.setValue(String.valueOf(Config.config.buttonWaitTime));
+            keepDark.setResponder(new PositiveLongParser(keepDark, (it) -> Config.config.buttonWaitTime = it));
+            listWidget.addEntry(listWidget.new InputListEntry(keepDark, Component.translatable("config.quitornot.settings.screen.wait")));
         }
         {
-            MutableText category = Text.translatable("config.quitornot.settings.toast.category");
+            MutableComponent category = Component.translatable("config.quitornot.settings.toast.category");
             listWidget.addEntry(listWidget.new CategoryEntry(category.setStyle(category.getStyle().withBold(true)), 11184810));
 
-            TextFieldWidget toastDisplayTime = new TextFieldWidget(client.textRenderer, 0, 0, 48, 20, Text.empty());
-            toastDisplayTime.setText(String.valueOf(Config.config.toastKeepTime));
-            toastDisplayTime.setChangedListener(new PositiveLongParser(toastDisplayTime, (it) -> Config.config.toastKeepTime = it));
-            listWidget.addEntry(listWidget.new InputListEntry(toastDisplayTime, Text.translatable("config.quitornot.settings.toast.time")));
+            EditBox toastDisplayTime = new EditBox(minecraft.font, 0, 0, 48, 20, Component.empty());
+            toastDisplayTime.setValue(String.valueOf(Config.config.toastKeepTime));
+            toastDisplayTime.setResponder(new PositiveLongParser(toastDisplayTime, (it) -> Config.config.toastKeepTime = it));
+            listWidget.addEntry(listWidget.new InputListEntry(toastDisplayTime, Component.translatable("config.quitornot.settings.toast.time")));
 
-            TextFieldWidget toastStartAliveTime = new TextFieldWidget(client.textRenderer, 0, 0, 48, 20, Text.empty());
-            toastStartAliveTime.setText(String.valueOf(Config.config.toastDelay));
-            toastStartAliveTime.setChangedListener(new PositiveLongParser(toastStartAliveTime, (it) -> Config.config.toastDelay = it));
-            listWidget.addEntry(listWidget.new InputListEntry(toastStartAliveTime, Text.translatable("config.quitornot.settings.toast.start")));
+            EditBox toastStartAliveTime = new EditBox(minecraft.font, 0, 0, 48, 20, Component.empty());
+            toastStartAliveTime.setValue(String.valueOf(Config.config.toastDelay));
+            toastStartAliveTime.setResponder(new PositiveLongParser(toastStartAliveTime, (it) -> Config.config.toastDelay = it));
+            listWidget.addEntry(listWidget.new InputListEntry(toastStartAliveTime, Component.translatable("config.quitornot.settings.toast.start")));
         }
-        this.addDrawableChild(listWidget);
-        this.addDrawableChild(back);
+        this.addRenderableWidget(listWidget);
+        this.addRenderableWidget(back);
     }
 
     @Override
-    public void render(DrawContext ctx, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
         super.render(ctx, mouseX, mouseY, delta);
-        ctx.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 15, 16777215);
+        ctx.drawCenteredString(this.font, this.title, this.width / 2, 15, 16777215);
 
-        MutableText literal = Text.literal("QuitOrNot");
-        ctx.drawTextWithShadow(textRenderer, literal, 2, this.height - textRenderer.fontHeight, 5592405);
+        MutableComponent literal = Component.literal("QuitOrNot");
+        ctx.drawString(font, literal, 2, this.height - font.lineHeight, 5592405);
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         Config.save();
-        client.setScreen(parentScreen);
+        minecraft.setScreen(parentScreen);
     }
 
     class PositiveLongParser implements Consumer<String> {
-        private final TextFieldWidget fieldWidget;
+        private final EditBox fieldWidget;
         private final Consumer<Long> longConsumer;
 
-        PositiveLongParser(TextFieldWidget fieldWidget, Consumer<Long> longConsumer) {
+        PositiveLongParser(EditBox fieldWidget, Consumer<Long> longConsumer) {
             this.fieldWidget = fieldWidget;
             this.longConsumer = longConsumer;
         }
@@ -128,7 +128,7 @@ public final class SettingScreen extends Screen {
             try {
                 long parsed = Long.parseLong(s);
                 if (parsed >= 0) {
-                    fieldWidget.setEditableColor(14737632);
+                    fieldWidget.setTextColor(14737632);
                     longConsumer.accept(parsed);
                     back.active = true;
                     return;
@@ -136,7 +136,7 @@ public final class SettingScreen extends Screen {
             } catch (Exception ignored) {
             }
             back.active = false;
-            fieldWidget.setEditableColor(16711680);
+            fieldWidget.setTextColor(16711680);
         }
     }
 }
