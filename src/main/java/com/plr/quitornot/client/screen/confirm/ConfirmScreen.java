@@ -4,6 +4,7 @@ import com.plr.quitornot.client.config.ClientConfig;
 import com.plr.quitornot.client.screen.confirm.style.BaseStyle;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
@@ -64,7 +65,9 @@ public final class ConfirmScreen extends Screen {
     @Override
     public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         style.render(this.minecraft, this.font, this, title, message, context, mouseX, mouseY, delta);
-        super.render(context, mouseX, mouseY, delta);
+        for (Renderable renderable : this.renderables) {
+            renderable.render(context, mouseX, mouseY, delta);
+        }
     }
 
     @Override
