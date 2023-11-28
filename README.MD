@@ -2,7 +2,7 @@
 
 ## Introduction
 
-QuitOrNot is a [QuitConfirm](https://github.com/CaaMoe/QuitConfirm) fork.
+`QuitOrNot` is a [`QuitConfirm`](https://github.com/CaaMoe/QuitConfirm) fork.
 
 As a clientside mod, it pops up a confirm screen | toast to avoid mistakenly quitting the game.
 
@@ -15,6 +15,8 @@ As a clientside mod, it pops up a confirm screen | toast to avoid mistakenly qui
 ## How 2 Install
 
 Fabric: Install the mod, along with Fabric API
+
+(Neo)Forge: Install the mod, no extra dependency needed
 
 ## License
 
