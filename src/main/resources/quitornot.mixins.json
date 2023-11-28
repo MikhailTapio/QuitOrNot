@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.plr.quitornot.client.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "quitornot.refmap.json",
+  "client": [
+    "MixinButton",
+    "MixinMinecraft"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
