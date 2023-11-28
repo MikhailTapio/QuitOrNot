@@ -18,12 +18,12 @@ public class Config {
     public static final Config config = new Config();
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static final Path path = FabricLoader.getInstance().getConfigDir().resolve("quit-or-not.json");
-    public ConfirmTypeEnum confirmTypeQuitGame = ConfirmTypeEnum.SCREEN;
-    public ConfirmTypeEnum confirmTypeQuitSinglePlayer = ConfirmTypeEnum.TOAST;
-    public ConfirmTypeEnum confirmTypeQuitMultiplayer = ConfirmTypeEnum.TOAST;
+    public ConfirmType confirmTypeQuitGame = ConfirmType.SCREEN;
+    public ConfirmType confirmTypeQuitSinglePlayer = ConfirmType.TOAST;
+    public ConfirmType confirmTypeQuitMultiplayer = ConfirmType.TOAST;
     public boolean enableKey = true;
     public long buttonWaitTime = 500L;
-    public confirmScreenStyleEnum confirmScreenStyle = confirmScreenStyleEnum.BEDROCK;
+    public ScreenStyle confirmScreenStyle = ScreenStyle.BEDROCK;
     public long toastKeepTime = 5000L;
     public long toastDelay = 500L;
 
@@ -36,13 +36,13 @@ public class Config {
             JsonElement element = JsonParser.parseString(Files.readString(path));
             JsonObject object = element.getAsJsonObject();
             if (object.has("confirmTypeQuitGame")) {
-                config.confirmTypeQuitGame = ConfirmTypeEnum.valueOf(object.getAsJsonPrimitive("confirmTypeQuitGame").getAsString());
+                config.confirmTypeQuitGame = ConfirmType.valueOf(object.getAsJsonPrimitive("confirmTypeQuitGame").getAsString());
             }
             if (object.has("confirmTypeQuitSinglePlayer")) {
-                config.confirmTypeQuitSinglePlayer = ConfirmTypeEnum.valueOf(object.getAsJsonPrimitive("confirmTypeQuitSinglePlayer").getAsString());
+                config.confirmTypeQuitSinglePlayer = ConfirmType.valueOf(object.getAsJsonPrimitive("confirmTypeQuitSinglePlayer").getAsString());
             }
             if (object.has("confirmTypeQuitMultiplayer")) {
-                config.confirmTypeQuitMultiplayer = ConfirmTypeEnum.valueOf(object.getAsJsonPrimitive("confirmTypeQuitMultiplayer").getAsString());
+                config.confirmTypeQuitMultiplayer = ConfirmType.valueOf(object.getAsJsonPrimitive("confirmTypeQuitMultiplayer").getAsString());
             }
             if (object.has("enableKey")) {
                 config.enableKey = object.getAsJsonPrimitive("enableKey").getAsBoolean();
@@ -51,7 +51,7 @@ public class Config {
                 config.buttonWaitTime = object.getAsJsonPrimitive("buttonWaitTime").getAsLong();
             }
             if (object.has("confirmScreenStyle")) {
-                config.confirmScreenStyle = confirmScreenStyleEnum.valueOf(object.getAsJsonPrimitive("confirmScreenStyle").getAsString());
+                config.confirmScreenStyle = ScreenStyle.valueOf(object.getAsJsonPrimitive("confirmScreenStyle").getAsString());
             }
             if (object.has("toastKeepTime")) {
                 config.toastKeepTime = object.getAsJsonPrimitive("toastKeepTime").getAsLong();
@@ -79,26 +79,26 @@ public class Config {
         return constants[(ordinal + 1) % constants.length];
     }
 
-    public enum confirmScreenStyleEnum {
+    public enum ScreenStyle {
         CLASSIC(Component.translatable("config.quitornot.type.screen.classic"), ClassicStyle::new),
         BEDROCK(Component.translatable("config.quitornot.type.screen.bedrock"), BedrockStyle::new);
         public final Component displayName;
         public final Supplier<BaseStyle> baseStyleSupplier;
 
-        confirmScreenStyleEnum(Component displayName, Supplier<BaseStyle> baseStyleSupplier) {
+        ScreenStyle(Component displayName, Supplier<BaseStyle> baseStyleSupplier) {
             this.displayName = displayName;
             this.baseStyleSupplier = baseStyleSupplier;
         }
     }
 
 
-    public enum ConfirmTypeEnum {
+    public enum ConfirmType {
         TOAST(Component.translatable("config.quitornot.type.confirm.toast")),
         SCREEN(Component.translatable("config.quitornot.type.confirm.screen")),
         NONE(Component.translatable("config.quitornot.type.confirm.none"));
         public final Component displayName;
 
-        ConfirmTypeEnum(Component displayName) {
+        ConfirmType(Component displayName) {
             this.displayName = displayName;
         }
     }
