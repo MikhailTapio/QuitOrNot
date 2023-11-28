@@ -1,33 +1,23 @@
-# QuitConfirm 退出时确认
+# QuitOrNot
 
-[![GitHub license](https://img.shields.io/github/license/CaaMoe/QuitConfirm?style=flat-square)](https://github.com/CaaMoe/QuitConfirm/blob/master/LICENSE)
+## Introduction
 
-## 概述
+QuitOrNot is a [QuitConfirm](https://github.com/CaaMoe/QuitConfirm) fork.
 
-QuitConfirm 是一款客户端 MOD，功能是让您的客户端在退出存档、多人游戏、领域世界时能有个确认窗口来防止误操作。
+As a clientside mod, it pops up a confirm screen | toast to avoid mistakenly quitting the game.
 
-## 特性
+## Features
 
-* 多种退出屏幕风格选择
-* 支持在退出存档、多人游戏、领域世界时弹出确认窗口
-* 含有设置面板，高度可配置性
+* Confirm by Screen | Toast
+* Multiple Optional Confirm Screen Styles
+* Highly Configurable
 
-## BUG 汇报
+## How 2 Install
 
-[new issue](https://github.com/CaaMoe/QuitConfirm/issues/new) 点击此处，提交你的问题
+Fabric: Install the mod, along with Fabric API
 
-## 构建
+## License
 
-克隆这个项目，执行以下指令：
+`QuitConfirm`(`QuitOrNot`'s source project) is licensed under the MIT License.
 
-    gradle build
-
-构建输出位于 `build/libs` 下。
-
-## 使用
-
-将此 mod 和 fabric api 丢入 mods 文件夹下即可使用
-
-## 开源协议
-
-`QuitConfirm`采用 `MIT`协议开源
+`QuitOrNot` is licensed under the Nova Relay License 1.0.

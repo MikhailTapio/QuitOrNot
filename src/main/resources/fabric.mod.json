@@ -1,34 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "quitconfirm",
+  "id": "quitornot",
   "version": "${version}",
-  "name": "QuitConfirm",
-  "description": "",
+  "name": "QuitOrNot",
+  "description": "Add a quit confirm screen/toast to avoid mistakenly quitting the game.",
   "authors": [
     "CaaMoe",
-    "Xiao_Cozi"
+    "Xiao_Cozi",
+    "Tapio"
   ],
-  "contact": {
-    "sources": "https://github.com/CaaMoe/QuitConfirm"
-  },
-  "license": "MIT",
-  "icon": "assets/quitconfirm/icon.png",
+  "license": "Nova-Relay-License-1.0",
+  "icon": "assets/quitornot/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "moe.caa.fabric.quitconfirm.client.main.QuitConfirm"
+      "com.plr.quitornot.client.QuitOrNot"
     ],
     "modmenu": [
-      "moe.caa.fabric.quitconfirm.client.modmenu.QuitConfirmModMenu"
+      "com.plr.quitornot.client.integration.modmenu.QuitOrNotModMenu"
     ]
   },
   "mixins": [
-    "quitconfirm.mixins.json"
+    "quitornot.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.9",
-    "fabric-api": "*",
-    "minecraft": "~1.19",
-    "java": ">=17"
+    "fabricloader": "*",
+    "fabric-api": "*"
   }
 }
