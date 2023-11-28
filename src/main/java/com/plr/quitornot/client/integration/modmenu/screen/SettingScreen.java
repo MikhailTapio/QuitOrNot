@@ -37,21 +37,21 @@ public final class SettingScreen extends Screen {
 
             listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder(Config.config.confirmTypeQuitGame.displayName, (button) -> {
-                        Config.config.confirmTypeQuitGame = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitGame);
+                        Config.config.confirmTypeQuitGame = Config.config.nextEnum(Config.ConfirmType.class, Config.config.confirmTypeQuitGame);
                         button.setMessage((Config.config.confirmTypeQuitGame.displayName));
                     })
                     .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.game")));
 
             listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmTypeQuitSinglePlayer.displayName), (button) -> {
-                        Config.config.confirmTypeQuitSinglePlayer = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitSinglePlayer);
+                        Config.config.confirmTypeQuitSinglePlayer = Config.config.nextEnum(Config.ConfirmType.class, Config.config.confirmTypeQuitSinglePlayer);
                         button.setMessage((Config.config.confirmTypeQuitSinglePlayer.displayName));
                     })
                     .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.singleplayer")));
 
             listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmTypeQuitMultiplayer.displayName), (button) -> {
-                        Config.config.confirmTypeQuitMultiplayer = Config.config.nextEnum(Config.ConfirmTypeEnum.class, Config.config.confirmTypeQuitMultiplayer);
+                        Config.config.confirmTypeQuitMultiplayer = Config.config.nextEnum(Config.ConfirmType.class, Config.config.confirmTypeQuitMultiplayer);
                         button.setMessage((Config.config.confirmTypeQuitMultiplayer.displayName));
                     })
                     .bounds(0, 0, 50, 20).build(), Component.translatable("config.quitornot.settings.type.confirm.multiplayer")));
@@ -62,7 +62,7 @@ public final class SettingScreen extends Screen {
 
             listWidget.addEntry(listWidget.new ButtonListEntry(Button
                     .builder((Config.config.confirmScreenStyle.displayName), (button) -> {
-                        Config.config.confirmScreenStyle = Config.config.nextEnum(Config.confirmScreenStyleEnum.class, Config.config.confirmScreenStyle);
+                        Config.config.confirmScreenStyle = Config.config.nextEnum(Config.ScreenStyle.class, Config.config.confirmScreenStyle);
                         button.setMessage((Config.config.confirmScreenStyle.displayName));
                     })
                     .bounds(0, 0, 50, 20).build(),

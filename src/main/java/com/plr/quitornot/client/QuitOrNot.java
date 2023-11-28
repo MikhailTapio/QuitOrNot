@@ -25,10 +25,10 @@ public class QuitOrNot implements ClientModInitializer {
     public void onInitializeClient() {
         Config.load();
         ClientScheduleStopEvent.CLIENT_SCHEDULE_STOP.register(() -> {
-            if (Config.config.confirmTypeQuitGame == Config.ConfirmTypeEnum.TOAST) {
+            if (Config.config.confirmTypeQuitGame == Config.ConfirmType.TOAST) {
                 return toastInFinalQuitHandler.trigger();
             }
-            if (Config.config.confirmTypeQuitGame == Config.ConfirmTypeEnum.SCREEN) {
+            if (Config.config.confirmTypeQuitGame == Config.ConfirmType.SCREEN) {
                 Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.game"), () -> Minecraft.getInstance().stop()));
                 return EventResult.CANCEL;
             }
@@ -46,20 +46,20 @@ public class QuitOrNot implements ClientModInitializer {
                 key = ((TranslatableContents) button.getMessage().getContents()).getKey();
             }
             if ("menu.returnToMenu".equals(key)) {
-                if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmTypeEnum.TOAST) {
+                if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmType.TOAST) {
                     return toastInSinglePlayerQuitHandle.trigger();
                 }
-                if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmTypeEnum.SCREEN) {
+                if (Config.config.confirmTypeQuitSinglePlayer == Config.ConfirmType.SCREEN) {
                     Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.singleplayer"), button::onPress));
                     return EventResult.CANCEL;
                 }
                 return EventResult.PASS;
             }
             if ("menu.disconnect".equals(key)) {
-                if (Config.config.confirmTypeQuitMultiplayer == Config.ConfirmTypeEnum.TOAST) {
+                if (Config.config.confirmTypeQuitMultiplayer == Config.ConfirmType.TOAST) {
                     return toastInMultiplayerQuitHandle.trigger();
                 }
-                if (Config.config.confirmTypeQuitMultiplayer == Config.ConfirmTypeEnum.SCREEN) {
+                if (Config.config.confirmTypeQuitMultiplayer == Config.ConfirmType.SCREEN) {
                     Minecraft.getInstance().setScreen(new ConfirmScreen(Minecraft.getInstance().screen, Component.translatable("screen.quitornot.confirm.title.multiplayer"), button::onPress));
                     return EventResult.CANCEL;
                 }
