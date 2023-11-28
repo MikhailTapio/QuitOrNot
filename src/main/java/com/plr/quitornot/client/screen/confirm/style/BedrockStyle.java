@@ -58,7 +58,7 @@ public final class BedrockStyle extends BaseStyle {
         if (client.level != null) {
             ctx.fillGradient(0, 0, screen.width, screen.height, -1072689136, -804253680);
         } else {
-            screen.renderBackground(ctx);
+            screen.renderDirtBackground(ctx);
             ctx.fill(0, 0, screen.width, screen.height, new Color(16, 16, 16, 179).getRGB());
         }
     }
