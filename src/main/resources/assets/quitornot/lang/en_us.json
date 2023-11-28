@@ -22,6 +22,6 @@
   "screen.quitornot.confirm.title.multiplayer": "Return to the title screen",
   "toast.quitornot.confirm.title": "Confirm?",
   "toast.quitornot.confirm.title.game": "Click once more to quit the game",
-  "toast.quitornot.confirm.title.singleplayer": "Click once more to return to the title screen",
-  "toast.quitornot.confirm.title.multiplayer": "Click once more to return to the title screen"
+  "toast.quitornot.confirm.title.singleplayer": "Click once more to return to the title",
+  "toast.quitornot.confirm.title.multiplayer": "Click once more to return to the title"
 }
