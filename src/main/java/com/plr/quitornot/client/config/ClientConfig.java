@@ -18,6 +18,7 @@ public class ClientConfig {
     public static final ForgeConfigSpec.ConfigValue<ScreenStyle> confirmScreenStyle;
     public static final ForgeConfigSpec.IntValue toastKeepTime;
     public static final ForgeConfigSpec.IntValue toastDelay;
+    public static final ForgeConfigSpec.BooleanValue toastDarkMode;
 
     static {
         final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -42,6 +43,9 @@ public class ClientConfig {
         toastDelay = builder
                 .comment("Only if milliseconds as many as below have passed since the Toast appeared will the actions work")
                 .defineInRange("toastDelay", 500, 0, 5000);
+        toastDarkMode = builder
+                .comment("Enable dark mode for the Toast")
+                .define("toastDarkMode", false);
         builder.pop();
         CFG = builder.build();
     }

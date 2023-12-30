@@ -1,5 +1,6 @@
 package com.plr.quitornot.client.toast;
 
+import com.plr.quitornot.client.config.ClientConfig;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.network.chat.Component;
@@ -19,9 +20,11 @@ public final class QuitToast extends BaseToast {
     @Override
     protected void drawToast(GuiGraphics context, ToastComponent manager) {
         context.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        context.blit(texture, 0, 0, 0, 0, width(), height());
+        final boolean dark = ClientConfig.toastDarkMode.get();
+        context.blit(texture, 0, 0, 0, dark ? 0 : 32, width(), height());
         context.blit(texture, 8, 0, 241, 0, 15, 30);
-        context.drawString(manager.getMinecraft().font, title, 35, 7, Color.WHITE.getRGB());
-        context.drawString(manager.getMinecraft().font, message, 35, 18, Color.WHITE.getRGB());
+        final int color = dark ? Color.WHITE.getRGB() : 4210752;
+        context.drawString(manager.getMinecraft().font, title, 35, 7, color, false);
+        context.drawString(manager.getMinecraft().font, message, 35, 18, color, false);
     }
 }
