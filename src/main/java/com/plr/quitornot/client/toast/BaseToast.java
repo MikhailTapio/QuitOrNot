@@ -7,7 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class BaseToast implements Toast {
-    protected static final ResourceLocation texture = new ResourceLocation("quitornot", "textures/gui/toasts.png");
+    protected static final ResourceLocation texture = ResourceLocation.fromNamespaceAndPath("quitornot", "textures/gui/toasts.png");
     protected final Component title;
     protected final Component message;
     protected final long keepTime;

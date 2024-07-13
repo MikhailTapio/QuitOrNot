@@ -46,7 +46,7 @@ public final class ClassicStyle extends BaseStyle {
         if (Minecraft.getInstance().level != null) {
             ctx.fillGradient(0, 0, screen.width, screen.height, -1072689136, -804253680);
         } else {
-            screen.renderDirtBackground(ctx);
+            screen.renderTransparentBackground(ctx);
         }
     }
 
