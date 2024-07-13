@@ -3,11 +3,11 @@ plugins {
     id 'maven-publish'
 }
 
-version = "${mod_version}+Fabric+${minecraft_version}"
+version = "Fabric-${minecraft_version}-${mod_version}"
 group = project.maven_group
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
     archivesBaseName = project.archives_base_name
 }
 

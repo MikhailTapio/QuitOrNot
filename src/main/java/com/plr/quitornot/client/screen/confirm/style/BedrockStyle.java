@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 public final class BedrockStyle extends BaseStyle {
-    private static final ResourceLocation WINDOW_TEXTURE = new ResourceLocation("quitornot", "textures/gui/bedrock/window.png");
-    private static final ResourceLocation BACKGROUND = new ResourceLocation("textures/block/dirt.png");
+    private static final ResourceLocation WINDOW_TEXTURE = ResourceLocation.fromNamespaceAndPath("quitornot", "textures/gui/bedrock/window.png");
+    private static final ResourceLocation BACKGROUND = ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
 
     // 窗口宽度
     private static final int windowWidth = 252;
@@ -58,7 +58,7 @@ public final class BedrockStyle extends BaseStyle {
         if (client.level != null) {
             ctx.fillGradient(0, 0, screen.width, screen.height, -1072689136, -804253680);
         } else {
-            screen.renderDirtBackground(ctx);
+            screen.renderTransparentBackground(ctx);
             ctx.fill(0, 0, screen.width, screen.height, new Color(16, 16, 16, 179).getRGB());
         }
     }

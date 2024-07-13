@@ -17,7 +17,8 @@ import java.util.List;
 
 public final class SettingElementListWidget extends ContainerObjectSelectionList<SettingElementListWidget.Entry> {
     public SettingElementListWidget(Minecraft minecraftClient, int i, int j, int k, int l, int m) {
-        super(minecraftClient, i, j, k, l, m);
+        //super(minecraftClient, i, j, k, l, m);
+        super(minecraftClient, i, j, k, m);
     }
 
     @Override
